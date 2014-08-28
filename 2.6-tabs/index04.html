@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR" ng-app="store">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+</head>
+<body ng-controller="StoreController as store">
+	<div class="container">
+		<!--<div ng-show="!store.product.soldOut">-->
+		<div ng-repeat="product in store.products | orderBy:'price'">
+			<div ng-hide="product.soldOut">
+				<h1>{{product.name | uppercase}}</h1>
+				<h2>{{product.price | currency}}</h2>
+				<img ng-src="{{product.images[0].full}}" alt="">
+				<button class="btn btn-success" ng-show="product.canPurchase"> Add to Cart</button>
+				
+				<section ng-controller="PanelController as panel">
+					<ul class="nav nav-pills">
+						<li ng-class="{ active:panel.isSelected(1)}">
+							<a href ng-click="panel.selectTab(1)">Description</a>
+						</li>
+						<li ng-class="{ active:panel.isSelected(2)}">
+							<a href ng-click="panel.selectTab(2)">Specification</a>
+						</li>
+						<li ng-class="{ active:panel.isSelected(3)}">
+							<a href ng-click="panel.selectTab(3)">Reviews</a>
+						</li>
+					</ul>
+					<div class="panel" ng-show="panel.isSelected(1)">
+						<h4>Description</h4>
+						<blockquote>{{product.description}}</blockquote>
+					</div>
+					<div class="panel" ng-show="panel.isSelected(2)">
+						<h4>Specification</h4>
+						<blockquote>None yet</blockquote>
+					</div>
+					<div class="panel" ng-show="panel.isSelected(3)">
+						<h4>Reviews</h4>
+						<blockquote>None yet</blockquote>
+					</div>
+				</section>
+
+			</div>
+			<hr>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript" src="app04.js"></script>
+</body>
+</html>
