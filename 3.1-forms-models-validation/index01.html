@@ -1,77 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-BR" ng-app="gemStore">
 <head>
-	<meta charset="UTF-8">
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
 </head>
 <body class="list-group" ng-controller="StoreController as store">
     <!--  Store Header  -->
     <header>
-      <h1 class="text-center">Flatlander Crafted Gems</h1>
-      <h2 class="text-center">– an Angular store –</h2>
+        <h1 class="text-center">Flatlander Crafted Gems</h1>
+        <h2 class="text-center">– an Angular store –</h2>
     </header>
     <div class="list-group-item" ng-repeat="product in store.products">
-      <h3>
-        {{product.name}}
-        <em class="pull-right">{{product.price | currency}}</em>
-      </h3>
-      <!-- Image Gallery  -->
-      <section class="gallery" ng-show="product.images.length" ng-controller="GalleryController as gallery">
-        <img class="thumbnail" ng-src="{{product.images[gallery.current]}}" />
-        <ul class="list-inline thumbs">
-          <li class="thumbnail col-md-1" ng-repeat="image in product.images">
-            <a href ng-click="gallery.setCurrent($index)"><img ng-src="{{image}}" /></a>
-          </li>
-        </ul>
+        <h3>
+            {{product.name}}
+            <em class="pull-right">{{product.price | currency}}</em>
+        </h3>
+        <!-- Image Gallery  -->
+        <section class="gallery" ng-show="product.images.length" ng-controller="GalleryController as gallery">
+            <img class="thumbnail" ng-src="{{product.images[gallery.current]}}" />
+            <ul class="list-inline thumbs">
+              <li class="thumbnail col-md-1" ng-repeat="image in product.images">
+                <a href ng-click="gallery.setCurrent($index)"><img ng-src="{{image}}" /></a>
+              </li>
+            </ul>
+        </section>
+
+        <!-- Product Tabs -->
+        <section class="tab" ng-controller="TabController as tab">
+            <ul class="nav nav-pills">
+                <li ng-class="{ active: tab.isSet(1) }">
+                    <a href ng-click="tab.setTab(1)">Description</a>
+                </li>
+                <li ng-class="{ active: tab.isSet(2) }">
+                    <a href ng-click="tab.setTab(2)">Specs</a>
+                </li>
+                <li ng-class="{ active: tab.isSet(3) }">
+                    <a href ng-click="tab.setTab(3)">Reviews</a>
+                </li>
+            </ul>
+            <div ng-show="tab.isSet(1)">
+                <h4>Description</h4>
+                <blockquote>{{product.description}}</blockquote>
+            </div>
+            <div ng-show="tab.isSet(2)">
+                <h4>Specs</h4>
+                <blockquote>Shine: {{product.shine}}</blockquote>
+            </div>
+            <div ng-show="tab.isSet(3)">
+                <h4>Reviews</h4>
+                <blockquote ng-repeat="review in product.reviews">
+                    <b>Stars: {{review.stars}}</b>
+                    {{review.body}}
+                    <cite>- {{review.author}}</cite>
+                </blockquote>
+
+                <form name="reviewForm">
+                    <blockquote>
+                        <b>Stars: {{review.stars}}</b>
+                        {{review.body}}
+                        <cite>by: {{review.author}}</cite>
+                    </blockquote>
+                    <select ng-model="review.stars" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
+                        <option value="">Rate the Product</option>
+                    </select>
+                    <textarea ng-model="review.body"></textarea>
+                    <label>by:</label>
+                    <input ng-model="review.author" type="email" />
+                    <input ng-model="review.terms" type="checkbox" /> Concordo com os termos
+                    <input class="btn" type="submit" value="Submit" />
+                </form>
+            </div>
       </section>
-
-      <!-- Product Tabs -->
-      <section class="tab" ng-controller="TabController as tab">
-        <ul class="nav nav-pills">
-          <li ng-class="{ active: tab.isSet(1) }">
-            <a href ng-click="tab.setTab(1)">Description</a></li>
-          <li ng-class="{ active: tab.isSet(2) }">
-            <a href ng-click="tab.setTab(2)">Specs</a></li>
-          <li ng-class="{ active: tab.isSet(3) }">
-            <a href ng-click="tab.setTab(3)">Reviews</a></li>
-        </ul>
-        <div ng-show="tab.isSet(1)">
-          <h4>Description</h4>
-          <blockquote>{{product.description}}</blockquote>
-        </div>
-        <div ng-show="tab.isSet(2)">
-          <h4>Specs</h4>
-          <blockquote>Shine: {{product.shine}}</blockquote>
-        </div>
-        <div ng-show="tab.isSet(3)">
-          <h4>Reviews</h4>
-          <blockquote ng-repeat="review in product.reviews">
-            <b>Stars: {{review.stars}}</b>
-            {{review.body}}
-            <cite>- {{review.author}}</cite>
-          </blockquote>
-
-          <form name="reviewForm">
-            <blockquote>
-              <b>Stars: {{review.stars}}</b>
-              {{review.body}}
-              <cite>by: {{review.author}}</cite>
-            </blockquote>
-            <select ng-model="review.stars" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
-              <option value="">Rate the Product</option>
-            </select>
-            <textarea ng-model="review.body"></textarea>
-            <label>by:</label>
-            <input ng-model="review.author" type="email" />
-            <input ng-model="review.terms" type="checkbox" /> Concordo com os termos
-            <input class="btn" type="submit" value="Submit" />
-          </form>
-        </div>
-      </section>
-
     </div>
-  </body>
-  <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="angular.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
+</body>
 </html>
